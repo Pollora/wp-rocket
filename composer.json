@@ -1,0 +1,72 @@
+{
+    "name": "pollora/wp-rocket",
+    "description": "WP Rocket for Pollora, the Laravel framework for WordPress: keeps WP Rocket from writing .htaccess and setting WP_CACHE unless the project asks for it.",
+    "keywords": ["pollora", "wordpress", "laravel", "wp-rocket", "cache"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Olivier Gorzalka",
+            "email": "olivier@amphibee.fr",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "illuminate/support": "^13.38"
+    },
+    "require-dev": {
+        "antecedent/patchwork": "^2.2",
+        "brain/monkey": "^2.7",
+        "illuminate/config": "^13.38",
+        "illuminate/container": "^13.38",
+        "laravel/pint": "^1.22.1",
+        "mockery/mockery": "^1.6.12",
+        "pestphp/pest": "^3.8.2",
+        "phpstan/phpstan": "^2.1.16",
+        "pollora/harness": "^0.1.12",
+        "szepeviktor/phpstan-wordpress": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pollora\\WpRocket\\": "src/"
+        },
+        "files": [
+            "src/Compatibility/register.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pollora\\WpRocket\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Pollora\\WpRocket\\WpRocketServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": [
+            "@test:unit",
+            "@phpstan",
+            "@lint:check"
+        ],
+        "test:unit": "pest",
+        "phpstan": "phpstan analyse",
+        "phpstan:ci": "phpstan analyse --no-progress",
+        "lint": "pint",
+        "lint:check": "pint --test",
+        "qa": "@php vendor/bin/pollora-qa check",
+        "qa:fast": "@php vendor/bin/pollora-qa check --fast"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
