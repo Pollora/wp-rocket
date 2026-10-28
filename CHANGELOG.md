@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-28
+
 ### Added
 
 - `WpRocketServiceProvider`, moved out of the framework (`Pollora\ThirdParty\WpRocket`): it answers WP Rocket's `rocket_init_cache_dir_generate_htaccess` and `rocket_set_wp_cache_constant` filters from `wordpress.wprocket.generate_htaccess` and `wordpress.wprocket.set_cache_constant`, both off by default
