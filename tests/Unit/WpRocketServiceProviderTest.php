@@ -81,6 +81,30 @@ describe('WpRocketServiceProvider', function (): void {
         expect($config->get('wordpress.wprocket'))->toBe(['generate_htaccess' => false, 'set_cache_constant' => true]);
     });
 
+    it('documents both settings as off when the project defines nothing', function (): void {
+        ['provider' => $provider, 'config' => $config] = wpRocketProvider([]);
+
+        $provider->register();
+
+        expect($config->get('wordpress.wprocket'))->toBe(['generate_htaccess' => false, 'set_cache_constant' => false]);
+    });
+
+    it('keeps generate_htaccess when only that one is set, and fills the other as off', function (): void {
+        ['provider' => $provider, 'config' => $config] = wpRocketProvider(['wprocket' => ['generate_htaccess' => true]]);
+
+        $provider->register();
+
+        expect($config->get('wordpress.wprocket'))->toBe(['generate_htaccess' => true, 'set_cache_constant' => false]);
+    });
+
+    it('treats a null project setting as no setting', function (): void {
+        ['provider' => $provider, 'config' => $config] = wpRocketProvider(['wprocket' => null]);
+
+        $provider->register();
+
+        expect($config->get('wordpress.wprocket'))->toBe(['generate_htaccess' => false, 'set_cache_constant' => false]);
+    });
+
     it('is discovered by Laravel', function (): void {
         $composer = json_decode((string) file_get_contents(__DIR__.'/../../composer.json'), true);
 

@@ -35,3 +35,62 @@ it('registers its autoloader once, then ignores further calls', function (): voi
 it('leaves other class names alone', function (): void {
     expect(class_exists('Pollora\\ThirdParty\\WpRocket\\SomethingElse'))->toBeFalse();
 });
+
+/**
+ * Closures that LegacyClassAliases registered on the autoload stack.
+ *
+ * @return list<Closure>
+ */
+function legacyAliasLoaders(): array
+{
+    return array_values(array_filter(
+        spl_autoload_functions(),
+        static fn ($loader): bool => $loader instanceof Closure
+            && (new ReflectionFunction($loader))->getClosureScopeClass()?->getName() === LegacyClassAliases::class,
+    ));
+}
+
+it('aliases the old provider name from the autoloader it registers, and only that name', function (): void {
+    (new ReflectionProperty(LegacyClassAliases::class, 'registered'))->setValue(null, false);
+
+    $before = count(legacyAliasLoaders());
+    LegacyClassAliases::register();
+    $loaders = legacyAliasLoaders();
+    $loader = end($loaders);
+
+    expect(count($loaders))->toBe($before + 1);
+
+    // A second alias of the same name is refused by PHP with a warning: proof that the loader aliased it.
+    $warnings = [];
+    set_error_handler(static function (int $no, string $message) use (&$warnings): bool {
+        $warnings[] = $message;
+
+        return true;
+    });
+
+    try {
+        $loader(LegacyClassAliases::OLD_PROVIDER);
+        $loader(LegacyClassAliases::OLD_PROVIDER);
+    } finally {
+        restore_error_handler();
+    }
+
+    expect(class_exists(LegacyClassAliases::OLD_PROVIDER, false))->toBeTrue()
+        ->and($warnings)->not->toBeEmpty();
+
+    $other = 'Pollora\\ThirdParty\\WpRocket\\Other';
+    $loader($other);
+
+    expect(class_exists($other, false))->toBeFalse();
+});
+
+it('registers the autoloader when its register file is loaded', function (): void {
+    (new ReflectionProperty(LegacyClassAliases::class, 'registered'))->setValue(null, false);
+
+    $before = count(legacyAliasLoaders());
+
+    require __DIR__.'/../../src/Compatibility/register.php';
+
+    expect(count(legacyAliasLoaders()))->toBe($before + 1)
+        ->and((new ReflectionProperty(LegacyClassAliases::class, 'registered'))->getValue())->toBeTrue();
+});
