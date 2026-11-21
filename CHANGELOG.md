@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- `WpRocketServiceProvider` is now `final` (CONV-08). This is a restriction of the API for anyone who extended it: a class that is not an extension point can no longer be subclassed; compose it instead
 - The architecture rules (`tests/Arch.php`) now run as the `Architecture` suite of `phpunit.xml.dist`.
 
 ## [0.1.0] - 2026-10-28

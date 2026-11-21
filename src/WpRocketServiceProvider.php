@@ -14,7 +14,7 @@ use Illuminate\Support\ServiceProvider;
  * Both are off by default; `wordpress.wprocket.generate_htaccess` and
  * `wordpress.wprocket.set_cache_constant` turn them on.
  */
-class WpRocketServiceProvider extends ServiceProvider
+final class WpRocketServiceProvider extends ServiceProvider
 {
     /**
      * Document the two settings: a project's own `wordpress.wprocket` wins over these defaults.
