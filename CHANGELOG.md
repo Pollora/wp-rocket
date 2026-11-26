@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `WpRocketServiceProvider` is now `final` (CONV-08). This is a restriction of the API for anyone who extended it: a class that is not an extension point can no longer be subclassed; compose it instead
 - The architecture rules (`tests/Arch.php`) now run as the `Architecture` suite of `phpunit.xml.dist`.
+- PHPStan runs at level 10 (was 5). `illuminate/contracts`, which already came with `illuminate/support`, is now a direct requirement. A container that binds `config` to anything else than a configuration repository now throws `BindingResolutionException`.
 
 ## [0.1.0] - 2026-10-28
 

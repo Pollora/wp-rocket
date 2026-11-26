@@ -13,6 +13,7 @@
     ],
     "require": {
         "php": "^8.3",
+        "illuminate/contracts": "^13.38",
         "illuminate/support": "^13.38"
     },
     "require-dev": {

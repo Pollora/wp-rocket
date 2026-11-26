@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Pollora\WpRocket;
 
+use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -21,7 +23,7 @@ final class WpRocketServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $config = $this->app->make('config');
+        $config = $this->config();
 
         $config->set('wordpress.wprocket', array_merge([
             'generate_htaccess' => false,
@@ -31,9 +33,25 @@ final class WpRocketServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $config = $this->app->make('config')->get('wordpress.wprocket', []);
+        $config = $this->config();
 
-        add_filter('rocket_init_cache_dir_generate_htaccess', ($config['generate_htaccess'] ?? false) ? static fn (): true => true : static fn (): false => false);
-        add_filter('rocket_set_wp_cache_constant', ($config['set_cache_constant'] ?? false) ? static fn (): true => true : static fn (): false => false);
+        add_filter('rocket_init_cache_dir_generate_htaccess', $config->get('wordpress.wprocket.generate_htaccess') ? static fn (): true => true : static fn (): false => false);
+        add_filter('rocket_set_wp_cache_constant', $config->get('wordpress.wprocket.set_cache_constant') ? static fn (): true => true : static fn (): false => false);
+    }
+
+    /**
+     * The application's configuration repository, which Laravel binds as `config`.
+     *
+     * @throws BindingResolutionException when `config` is bound to something else
+     */
+    private function config(): Repository
+    {
+        $config = $this->app->make('config');
+
+        if (! $config instanceof Repository) {
+            throw new BindingResolutionException('The container does not bind a configuration repository as `config`.');
+        }
+
+        return $config;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Config\Repository;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Pollora\WpRocket\WpRocketServiceProvider;
 
 /**
@@ -104,6 +105,13 @@ describe('WpRocketServiceProvider', function (): void {
 
         expect($config->get('wordpress.wprocket'))->toBe(['generate_htaccess' => false, 'set_cache_constant' => false]);
     });
+
+    it('refuses a container whose config binding is not a configuration repository', function (): void {
+        $app = new Container;
+        $app->instance('config', new stdClass);
+
+        (new WpRocketServiceProvider($app))->register();
+    })->throws(BindingResolutionException::class, 'configuration repository');
 
     it('is discovered by Laravel', function (): void {
         $composer = json_decode((string) file_get_contents(__DIR__.'/../../composer.json'), true);
