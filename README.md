@@ -1,3 +1,15 @@
+<p align="center">
+  <a href="https://pollora.dev">
+    <img src="https://raw.githubusercontent.com/Pollora/.github/main/brand/banners/wp-rocket.png" width="100%" alt="Pollora WP Rocket: WP Rocket that leaves your project files alone">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://packagist.org/packages/pollora/wp-rocket"><img src="https://img.shields.io/packagist/v/pollora/wp-rocket" alt="Latest version"></a>
+  <a href="https://github.com/Pollora/wp-rocket/actions/workflows/harness.yml"><img src="https://github.com/Pollora/wp-rocket/actions/workflows/harness.yml/badge.svg" alt="Harness"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/Pollora/wp-rocket" alt="License"></a>
+</p>
+
 # Pollora WP Rocket
 
 [WP Rocket](https://wp-rocket.me) for [Pollora](https://pollora.dev), the Laravel framework for WordPress: it keeps WP Rocket from writing its rules into `.htaccess` and from setting `WP_CACHE`, unless the project asks for it.
