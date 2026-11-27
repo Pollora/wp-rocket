@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The architecture rules (`tests/Arch.php`) now run as the `Architecture` suite of `phpunit.xml.dist`.
 - PHPStan runs at level 10 (was 5). `illuminate/contracts`, which already came with `illuminate/support`, is now a direct requirement. A container that binds `config` to anything else than a configuration repository now throws `BindingResolutionException`.
 
+### Fixed
+
+- Development only: `antecedent/patchwork` is required at commit `d588654` of its `master` branch (antecedent/patchwork#235), aliased as 2.2.6, so that Pest mutants are no longer counted as caught when tests hang. This pin is temporary until the next Patchwork release
+
 ## [0.1.0] - 2026-10-28
 
 ### Added

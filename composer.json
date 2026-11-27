@@ -17,7 +17,7 @@
         "illuminate/support": "^13.38"
     },
     "require-dev": {
-        "antecedent/patchwork": "^2.2",
+        "antecedent/patchwork": "dev-master#d588654e5c1304810b038db2b5c98d39b6f76c61 as 2.2.6",
         "brain/monkey": "^2.7",
         "illuminate/config": "^13.38",
         "illuminate/container": "^13.38",
